@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'comments',
     'follow',
     'interactions',
+    "graphene_django",
+    'graphql_jwt',
+    # 'django.contrib.auth',
 ]
 
 MIDDLEWARE = [
@@ -129,9 +132,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "user.CustomUser"
 
 AUTHENTICATION_BACKENDS = [
-    'user.backends.EmailOrUsernameBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    "graphql_jwt.backends.JSONWebTokenBackend",
+    "user.backends.EmailOrUsernameBackend",      
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+GRAPHENE = {
+    "SCHEMA": "social_app.schema.schema",
+     "MIDDLEWARE": [
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+    ],
+}
