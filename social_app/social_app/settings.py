@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'comments',
     'follow',
     'interactions',
+    'feed',
     "graphene_django",
     'graphql_jwt',
     # 'django.contrib.auth',
