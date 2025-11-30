@@ -55,8 +55,25 @@ class UpdatePost(graphene.Mutation):
         except Post.DoesNotExist:
             raise Exception("Post not found or you're not the author")
 
+class DeletePost(graphene.Mutation):
+    success = graphene.Boolean()
+
+    class Arguments:
+        post_id = graphene.UUID(required=True)
+    
+    @login_required
+    def mutate(self, info, post_id):
+        author = info.context.user
+        try:
+            post = Post.objects.get(post_id=post_id, author=author)
+            post.delete()
+            return DeletePost(success=True)
+        except Post.DoesNotExist:
+            raise Exception("Post not found or you're not the author")
+
 class Mutation(graphene.ObjectType):
     create_post = CreatePost.Field()
     update_post = UpdatePost.Field()
+    delete_post = DeletePost.Field()
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
